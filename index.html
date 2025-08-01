@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Minha Amor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff5f5;
+            overflow-x: hidden;
+        }
+        
+        .dancing-font {
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .heart {
+            animation: heartbeat 1.5s infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .photo-frame {
+            border: 15px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: rotate(-5deg);
+            transition: all 0.3s ease;
+        }
+        
+        .photo-frame:hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+        
+        .message-box {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,245,245,0.9) 100%);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(206, 92, 118, 0.2);
+        }
+        
+        .btn-romantic {
+            background: linear-gradient(45deg, #ff6b8b, #ff8e9e);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-romantic:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 107, 139, 0.3);
+        }
+        
+        .polaroid {
+            background: white;
+            padding: 15px 15px 60px 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: rotate(3deg);
+            transition: all 0.3s ease;
+        }
+        
+        .polaroid:nth-child(even) {
+            transform: rotate(-3deg);
+        }
+        
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+        
+        .love-letter {
+            background: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+            border-left: 5px solid #ff6b8b;
+        }
+        
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: #ff8e9e;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .envelope:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 0;
+            height: 0;
+            right: 0px;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #ff6b8b;
+            transform-origin: top;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .envelope.open:before {
+            transform: rotateX(180deg);
+            z-index: 2;
+        }
+        
+        .envelope .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 20px;
+            right: 20px;
+            height: 180px;
+            background: white;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        
+        .envelope.open .letter {
+            height: 250px;
+            bottom: 50px;
+            transition-delay: 0.3s;
+            z-index: 2;
+        }
+        
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .heart-particle {
+            position: absolute;
+            color: rgba(255, 107, 139, 0.6);
+            animation: float-up 4s linear infinite;
+        }
+        
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="text-pink-900">
+    <!-- Floating Hearts Background -->
+    <div class="floating-hearts" id="hearts-container"></div>
+    
+    <!-- Header -->
+    <header class="py-10 px-5 text-center">
+        <h1 class="text-5xl md:text-6xl font-bold dancing-font text-pink-600 mb-4">
+            Para o <span class="text-red-500 heart inline-block">Amor da Minha Vida</span>
+        </h1>
+        <p class="text-xl md:text-2xl dancing-font text-pink-700 max-w-2xl mx-auto">
+            Cada dia ao seu lado é um presente que eu guardo no meu coração
+        </p>
+    </header>
+    
+    <!-- Main Photo Section -->
+    <section class="py-10 px-5 flex justify-center">
+        <div class="photo-frame rounded-lg overflow-hidden w-full max-w-md">
+            <img src="./fotos/Principal.jpeg" 
+                alt="Couple" class="w-full h-auto">
+        </div>
+    </section>
+    
+    <!-- Love Message -->
+    <section class="py-10 px-5 max-w-4xl mx-auto">
+        <div class="message-box p-8 md:p-10">
+            <h2 class="text-3xl md:text-4xl font-bold dancing-font text-center mb-6 text-pink-600">
+                Meu amor...
+            </h2>
+            <p class="text-lg mb-4">
+              Só queria te dizer o quanto você é especial pra mim.</p>
+            <p class="text-lg mb-4">
+                Cada dia ao seu lado é um dia maravilhoso, e eu sou eternamente grato por ter alguém tão incrível como você na minha vida.
+            </p>
+            <p class="text-lg mb-4">
+                Seu sorriso ilumina meu mundo, sua voz conforta meu coração, e seu jeitinho me faz querer ser um homem melhor todos os dias.
+            </p>
+            <p class="text-lg mb-4">
+                Quero que você seja o minha eterna amiga, eterna namorada e minha futura esposa.
+            </p>
+            <p class="text-lg mb-4 dancing-font text-2xl text-center text-pink-600">
+                Te amo muito, e vou continuar te amando e cuidando de você com todo carinho do mundo.
+            </p>
+        </div>
+    </section>
+    
+    <!-- Memories Gallery -->
+    <section class="py-16 px-5 bg-pink-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold dancing-font text-center mb-12 text-pink-600">
+                Nossas Memórias
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Photo 1 -->
+                <div class="polaroid">
+                    <img src="./fotos/foto1.jpeg" 
+                        alt="Memory 1" class="w-full h-128 object-cover">
+                    <p class="text-center mt-3 dancing-font text-xl">Pós quase morte no brinquedo duvidoso</p>
+                </div>
+                
+                <!-- Photo 2 -->
+                <div class="polaroid">
+                    <img src="./fotos/foto2.jpeg" 
+                        alt="Memory 2" class="w-full h-128 object-cover">
+                    <p class="text-center mt-3 dancing-font text-xl">Ida a pamonharia</p>
+                </div>
+                
+                <!-- Photo 3 -->
+                <div class="polaroid">
+                    <img src="./fotos/foto3.jpeg" 
+                        alt="Memory 3" class="w-full h-128 object-cover">
+                    <p class="text-center mt-3 dancing-font text-xl">Parque Flamboyant</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
+                <!-- Photo 1 -->
+                <div class="polaroid">
+                    <img src="./fotos/foto4.jpeg" 
+                        alt="Memory 1" class="w-full h-128 object-cover">
+                    <p class="text-center mt-3 dancing-font text-xl">Piscina no apartamento</p>
+                </div>
+                
+                <!-- Photo 2 -->
+                <div class="polaroid">
+                    <img src="./fotos/foto5.jpeg" 
+                        alt="Memory 2" class="w-full h-128 object-cover">
+                    <p class="text-center mt-3 dancing-font text-xl">Festa junina</p>
+                </div>
+                
+                <!-- Photo 3 -->
+                <div class="polaroid">
+                    <img src="./fotos/foto6.jpeg" 
+                        alt="Memory 3" class="w-full h-128 object-cover">
+                    <p class="text-center mt-3 dancing-font text-xl">Lago corumbá</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Love Letter -->
+    <section class="py-16 px-5">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold dancing-font mb-6 text-pink-600">
+                Uma Carta de Amor
+            </h2>
+            
+            <div class="flex justify-center mb-10">
+                <div class="envelope" id="envelope">
+                    <div class="letter">
+                        <h3 class="dancing-font text-2xl mb-3 text-pink-600">Minha Princesa,</h3>
+                        <p class="text-left">Você me faz bem. Sua presença transforma qualquer dia</p>
+                        <p class="text-left mt-2">A cada momento ao seu lado, tenho certeza de que quero mais...</p>
+                        <p class="text-left mt-2 dancing-font text-xl">Para sempre seu, Pedro</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="playSong()" class="btn-romantic text-white px-8 py-3 rounded-full text-lg font-semibold shadow-lg flex items-center mx-auto">
+                <i class="fas fa-music mr-2"></i> Clique para nossa música
+            </button>
+        </div>
+    </section>
+    
+    <!-- Reasons I Love You -->
+    <section class="py-16 px-5 bg-pink-50">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold dancing-font text-center mb-12 text-pink-600">
+                10 Razões Pelas Quais Eu Te Amo
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <div class="text-pink-500 text-2xl mb-2">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Seu Sorriso</h3>
+                    <p>O seu sorriso é a luz que ilumina meus dias, capaz de transformar qualquer momento e trazer uma alegria genuína ao meu coração.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <div class="text-pink-500 text-2xl mb-2">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Seu Coração</h3>
+                    <p>Você tem o coração mais puro e bondoso que eu já conheci.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <div class="text-pink-500 text-2xl mb-2">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Seu Jeito</h3>
+                    <p>A maneira única como você vê o mundo me inspira todos os dias.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <div class="text-pink-500 text-2xl mb-2">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Seu Abraço</h3>
+                    <p>Seus braços são o único lugar onde eu me sinto verdadeiramente em casa.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <div class="text-pink-500 text-2xl mb-2">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Sua Força</h3>
+                    <p>A forma como você enfrenta os desafios da vida me deixa orgulhoso.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <div class="text-pink-500 text-2xl mb-2">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Seu Amor</h3>
+                    <p>A maneira como você me ama me faz sentir o homem mais sortudo do mundo.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <div class="text-pink-500 text-2xl mb-2">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Seu beijo</h3>
+                    <p>A maneira que seu beijo se torna cada vez mais apaixonante.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <div class="text-pink-500 text-2xl mb-2">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Seu Humor</h3>
+                    <p>O jeito que seu humor é tão quebrado e específico quanto o meu</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <div class="text-pink-500 text-2xl mb-2">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Seu Corpo</h3>
+                    <p>Cada detalhe do seu corpo me faz querer te sentir perto de mim todo dia e toda hora.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <div class="text-pink-500 text-2xl mb-2">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Seu Olhos</h3>
+                    <p>A maneira com que mudaram minha cor favorita para a cor deles.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Final Countdown -->
+    <section class="py-16 px-5 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold dancing-font mb-6 text-pink-600">
+                Desde Que Nos Conhecemos
+            </h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+                <div class="bg-pink-100 p-4 rounded-lg">
+                    <div class="text-4xl font-bold text-pink-600" id="years">0</div>
+                    <div class="text-pink-800">Anos</div>
+                </div>
+                <div class="bg-pink-100 p-4 rounded-lg">
+                    <div class="text-4xl font-bold text-pink-600" id="months">0</div>
+                    <div class="text-pink-800">Meses</div>
+                </div>
+                <div class="bg-pink-100 p-4 rounded-lg">
+                    <div class="text-4xl font-bold text-pink-600" id="days">0</div>
+                    <div class="text-pink-800">Dias</div>
+                </div>
+                <div class="bg-pink-100 p-4 rounded-lg">
+                    <div class="text-4xl font-bold text-pink-600" id="hours">0</div>
+                    <div class="text-pink-800">Horas</div>
+                </div>
+            </div>
+            
+            <p class="mt-10 text-xl dancing-font text-pink-700">
+                E eu continuarei te amando por muitos e muitos mais...
+            </p>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-10 px-5 bg-pink-600 text-white text-center">
+        <div class="max-w-4xl mx-auto">
+            <h3 class="text-3xl dancing-font mb-6">
+                Você é o amor da minha vida
+            </h3>
+            <p class="mb-6">
+                Este site foi feito com todo o meu carinho para você, a pessoa mais especial do meu mundo.
+            </p>
+        </div>
+    </footer>
+    
+    <!-- Audio Element (hidden) -->
+    <audio id="loveSong" src="/audio/Eu juro.mp3"></audio>
+    
+    <script>
+        // Floating hearts animation
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            const heartCount = 30;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-particle';
+                heart.innerHTML = '<i class="fas fa-heart"></i>';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(heart);
+            }
+        }
+        
+        // Envelope interaction
+        document.getElementById('envelope').addEventListener('click', function() {
+            this.classList.toggle('open');
+        });
+        
+        // Play song
+        function playSong() {
+            const song = document.getElementById('loveSong');
+            song.play();
+            
+            // Create a sweet alert
+            const alertBox = document.createElement('div');
+            alertBox.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-xl z-50 max-w-sm text-center';
+            alertBox.innerHTML = `
+                <h3 class="text-2xl dancing-font text-pink-600 mb-3">Nossa Música</h3>
+                <p class="mb-4">Esta música é a que eu quero que toque no nosso casamento</p>
+                <button onclick="this.parentElement.remove()" class="btn-romantic text-white px-4 py-2 rounded-full text-sm font-semibold">
+                    Fechar
+                </button>
+            `;
+            document.body.appendChild(alertBox);
+        }
+        
+        // Countdown timer
+        function updateCountdown() {
+            const anniversary = new Date(2024, 8, 1);
+            const now = new Date();
+            
+            const diff = now - anniversary;
+            
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            document.getElementById('years').textContent = years;
+            document.getElementById('months').textContent = months;
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+        }
+        
+        // Initialize everything when page loads
+        window.onload = function() {
+            createHearts();
+            updateCountdown();
+            setInterval(updateCountdown, 3600000); // Update every hour
+        };
+    </script>
+</body>
+</html>
